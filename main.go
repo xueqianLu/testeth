@@ -4,14 +4,13 @@ import(
 	"context"
 	"flag"
 	"fmt"
-	//"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"log"
 	"time"
 )
 
 func main() {
-	fmt.Println("hhhh")
 	url := flag.String("u", "http://127.0.0.1:8545", "rpc url")
 	flag.Parse()
 	cli,err := ethclient.Dial(*url)
@@ -19,11 +18,11 @@ func main() {
 		panic(err)
 	}
 
-	//newHead := make(chan *types.Header, 20)
-	//sub, err := cli.SubscribeNewHead(context.Background(), newHead)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
+	newHead := make(chan *types.Header, 20)
+	sub, err := cli.SubscribeNewHead(context.Background(), newHead)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	tm := time.NewTicker(time.Second * 3)
 	defer tm.Stop()
@@ -36,13 +35,13 @@ func main() {
 			} else {
 				log.Println("get block number ", blk)
 			}
-		//case suberr := <- sub.Err():
-		//	log.Fatal(suberr)
-		//case n,ok := <- newHead:
-		//	if !ok {
-		//		return
-		//	}
-		//	fmt.Println("get new header ", n.Number)
+		case suberr := <- sub.Err():
+			log.Fatal(suberr)
+		case n,ok := <- newHead:
+			if !ok {
+				return
+			}
+			fmt.Println("get new header ", n.Number)
 		}
 	}
 }
