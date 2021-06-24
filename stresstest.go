@@ -2,13 +2,12 @@ package main
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"sync"
 	"time"
 )
 
-func StressRpc(cli *ethclient.Client, n int) {
+func StressRpc(cli *HpbClient, n int) {
 	ctx := context.Background()
 	wg := sync.WaitGroup{}
 	for i := 0; i < n; i++ {

@@ -1,17 +1,23 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"github.com/ethereum/go-ethereum/ethclient"
+	"time"
 )
 
 func main() {
 	url := flag.String("u", "http://127.0.0.1:8545", "rpc url")
 	subAddr := flag.String("addr", "", "subscribe address")
 	routines := flag.Int("n", 0, "routines number that stress test used ")
+	lrandom := flag.Bool("random", false, "loop get random")
+	tduration := flag.Int("d", 10, "test duration")
 	flag.Parse()
 
-	cli, err := ethclient.Dial(*url)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(*tduration))
+	defer cancel()
+
+	cli, err := CreateHpbClient(*url)
 	if err != nil {
 		panic(err)
 	}
@@ -22,5 +28,9 @@ func main() {
 
 	if len(*subAddr) > 0 {
 		SubScribe(cli, *subAddr)
+	}
+
+	if *lrandom {
+		RandomTest(ctx, cli)
 	}
 }
