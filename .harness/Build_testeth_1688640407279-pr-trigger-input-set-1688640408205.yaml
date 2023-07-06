@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_testeth_1688640407279-pr-trigger-input-set
+  identifier: Build_testeth_1688640407279prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_testeth_1688640407279
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
