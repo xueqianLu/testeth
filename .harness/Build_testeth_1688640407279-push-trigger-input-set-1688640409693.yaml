@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_testeth_1688640407279-push-trigger-input-set
+  identifier: Build_testeth_1688640407279pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_testeth_1688640407279
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
